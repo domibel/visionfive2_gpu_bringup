@@ -1,0 +1,30 @@
+$ sudo env PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
+  vkmark --winsys kms --winsys-options kms-tty=/dev/tty1 -s 1920x1080 \
+  -b clear:duration=20 -b cube:duration=20 -b shading:duration=20 \
+  -b desktop:duration=20 -b effect2d:duration=20 -b texture:duration=20 \
+  -b vertex:duration=20
+
+MESA: warning: Core count fetching is unimplemented. Setting 1 for now.
+WARNING: powervr is not a conformant Vulkan implementation, testing use only.
+MESA: warning: Core count fetching is unimplemented. Setting 1 for now.
+WARNING: powervr is not a conformant Vulkan implementation, testing use only.
+=======================================================
+    vkmark 2025.01
+=======================================================
+    Vendor ID:      0x1010
+    Device ID:      0x36054182
+    Device Name:    PowerVR B-Series BXE-4-32 MC1
+    Driver Version: 109056006
+    Device UUID:    e696be73e02fe0dd4ac92aaaae05386b
+=======================================================
+[clear] duration=20: FPS: 54 FrameTime: 18.519 ms
+[cube] duration=20: FPS: 27 FrameTime: 37.037 ms
+[shading] duration=20: FPS: 25 FrameTime: 40.000 ms
+[desktop] duration=20: FPS: 12 FrameTime: 83.333 ms
+[effect2d] duration=20: FPS: 7 FrameTime: 142.857 ms
+[texture] duration=20: FPS: 25 FrameTime: 40.000 ms
+[vertex] duration=20: FPS: 26 FrameTime: 38.462 ms
+=======================================================
+                                   vkmark Score: 25
+=======================================================
+RC=0
