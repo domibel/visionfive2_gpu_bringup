@@ -3,21 +3,51 @@
 ## Summary
 
 With a few small kernel changes you can get experimental GPU 3D graphics working
-on the StarFive VisionFive 2. The vkmark 1920x1080 test results look promising:
+on the StarFive VisionFive 2.
+
+The vkmark 1920x1080 test results look promising.
+
+| Scene | FPS (KMS, 1920x1080) | FPS (Weston, 800x600) |
+|---|---|---|
+| clear | 54 | 37 |
+| cube | 27 | 28 |
+| shading | 25 | 22 |
+| desktop | 12 | 6 |
+| effect2d | 7 | 15 |
+| texture | 25 | 26 |
+| vertex | 26 | 27 |
+
+[`vkmark_kms_output.txt`](vkmark_kms_output.txt), [`vkmark_weston_gl_800x600_output.txt`](vkmark_weston_gl_800x600_output.txt)
+
+
+
+Most glmark2-es2-wayland scenes under Weston (Zink) hit a reset or hang within 2 seconds due to a missing FW completion IRQ.
 
 | Scene | FPS |
 |---|---|
-| clear | 54 |
-| cube | 27 |
-| shading | 25 |
-| desktop | 12 |
-| effect2d | 7 |
-| texture | 25 |
-| vertex | 26 |
+| clear | 17 |
+| shading | 13 |
+| bump | 13 |
+| function | 12 |
+| texture | 12 |
+| ideas | 10 |
+| shadow | 9 |
+| pulsar | 6 |
+| refract | 4 |
+| conditionals | 3 |
+| effect2d | 2 |
+| loop | 2 |
+| buffer | 1 |
+| desktop | 1 |
+| terrain | 1 |
+| build | — |
+| jellyfish | — |
 
-Full raw output, including the exact command used:
-[`vkmark_output.txt`](vkmark_output.txt),
-[`vulkaninfo_output.txt`](vulkaninfo_output.txt).
+[`glmark2_weston_zink_clear_2sec_output.txt`](glmark2_weston_zink_clear_2sec_output.txt)
+
+
+
+glxgears under Weston with XWayland didn't work at all.
 
 ## Hardware
 
@@ -27,9 +57,7 @@ Full raw output, including the exact command used:
 ## Firmware
 
 The driver loads `rogue_36.50.54.182_v1.fw` from `/lib/firmware/powervr/`.
-Pinned to commit `8a58f818` ("update to version 1.1.OS@6976702"), which
-matches the FW version this board actually ran for the outputs in this
-folder (`FW version v1.1 (build 6976702 OS)`).
+Pinned to commit `8a58f818` (`FW version v1.1 (build 6976702 OS)`).
 
 Install:
 
@@ -43,6 +71,7 @@ sudo cp rogue_36.50.54.182_v1.fw /lib/firmware/powervr/
 ## Kernel
 
 You need to apply 2 branches to your kernel:
+
 [`jh7110_dc8200_hdmi_v7.2`](https://github.com/domibel/linux/tree/jh7110_dc8200_hdmi_v7.2)
 and
 [`powervr_on_jh7110_visionfive2_v7.2`](https://github.com/domibel/linux/tree/powervr_on_jh7110_visionfive2_v7.2)
@@ -67,10 +96,17 @@ CONFIG_CMA=y
 The DTB
 `arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2-v1.3b.dtb` is
 built from the same tree; where it needs to go depends on how your board's
-bootloader is set up (on my system it's `/boot/efi/dtb/starfive/`).
+bootloader is set up, on my system it's `/boot/efi/dtb/starfive/`.
 
 If your kernel's default CMA reservation is too small, increase it with
-`cma=64M` (or higher) on your kernel cmdline.
+`cma=64M` or higher on your kernel cmdline.
+
+## Install userspace packages
+
+```bash
+sudo apt install mesa-vulkan-drivers vulkan-tools vkmark glmark2-es2-wayland
+```
+
 
 ## Loading the driver
 
@@ -84,13 +120,6 @@ sudo insmod powervr.ko pow_rascaldust_enable=1
 PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 vkmark --winsys headless -s 64x64 -b clear:duration=1
 sudo rmmod powervr
 sudo insmod powervr.ko
-```
-
-
-## Install userspace packages
-
-```bash
-sudo apt install mesa-vulkan-drivers vulkan-tools vkmark
 ```
 
 
@@ -128,6 +157,21 @@ vkmark ...  -b shading:duration=20
 ```
 `rmmod` also fails from time to time with a board hang.
 
+
+## Run under Weston (Wayland compositor)
+
+```bash
+sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
+  weston --backend=drm-backend.so --renderer=gl
+```
+
+```bash
+sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-1 \
+  PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
+  glmark2-es2-wayland -b clear:duration=2
+```
+
+It is not always `wayland-1`, sometimes it is `wayland-0`.
 
 ## FW issues
 

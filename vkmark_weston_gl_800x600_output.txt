@@ -1,0 +1,31 @@
+$ sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
+  weston --backend=drm-backend.so --renderer=gl &
+
+$ sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-1 \
+  PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
+  vkmark --winsys wayland -s 800x600 \
+  -b clear:duration=20 -b cube:duration=20 -b shading:duration=20 \
+  -b desktop:duration=20 -b effect2d:duration=20 -b texture:duration=20 \
+  -b vertex:duration=20
+
+MESA: warning: Core count fetching is unimplemented. Setting 1 for now.
+WARNING: powervr is not a conformant Vulkan implementation, testing use only.
+=======================================================
+    vkmark 2025.01
+=======================================================
+    Vendor ID:      0x1010
+    Device ID:      0x36054182
+    Device Name:    PowerVR B-Series BXE-4-32 MC1
+    Driver Version: 109056006
+    Device UUID:    e696be73e02fe0dd4ac92aaaae05386b
+=======================================================
+[clear] duration=20: FPS: 37 FrameTime: 27.027 ms
+[cube] duration=20: FPS: 28 FrameTime: 35.714 ms
+[shading] duration=20: FPS: 22 FrameTime: 45.455 ms
+[desktop] duration=20: FPS: 6 FrameTime: 166.667 ms
+[effect2d] duration=20: FPS: 15 FrameTime: 66.667 ms
+[texture] duration=20: FPS: 26 FrameTime: 38.462 ms
+[vertex] duration=20: FPS: 27 FrameTime: 37.037 ms
+=======================================================
+                                   vkmark Score: 23
+=======================================================
