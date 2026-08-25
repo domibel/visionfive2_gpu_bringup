@@ -1,0 +1,7 @@
+[42062.671401] powervr 18000000.gpu: Job timeout
+[42063.247294] powervr 18000000.gpu: Job timeout
+[42063.823288] powervr 18000000.gpu: Job timeout
+[42064.399271] powervr 18000000.gpu: Job timeout
+[42064.975224] powervr 18000000.gpu: Job timeout
+[42065.487099] powervr 18000000.gpu: Job timeout
+[42067.567836] powervr 18000000.gpu: [drm] FW hard reset (called from pvr_power_reset+0xcc/0x2c8 [powervr])

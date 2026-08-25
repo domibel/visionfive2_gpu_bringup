@@ -1,0 +1,2 @@
+[41996.563033] powervr 18000000.gpu: Job timeout
+[42001.042948] powervr 18000000.gpu: [drm] FW hard reset (called from pvr_power_reset+0xcc/0x2c8 [powervr])
