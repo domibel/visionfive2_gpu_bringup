@@ -1,51 +1,71 @@
 # JH7110 / VisionFive 2 — PowerVR BXE-4-32 GPU + DC8200 display bring-up
 
+![glmark2 jellyfish running under labwc, with one terminal showing the command and output and a second running fastfetch](labwc_glmark2_fastfetch_t30s.png)
+
 ## Summary
 
 With a few small kernel changes you can get experimental GPU 3D graphics working
 on the StarFive VisionFive 2.
 
-The vkmark 1920x1080 test results look promising.
+### vkmark test results
 
-| Scene | FPS (KMS, 1920x1080) | FPS (Weston, 800x600) |
-|---|---|---|
-| clear | 54 | 37 |
-| cube | 27 | 28 |
-| shading | 25 | 22 |
-| desktop | 12 | 6 |
-| effect2d | 7 | 15 |
-| texture | 25 | 26 |
-| vertex | 26 | 27 |
+The following results are from vkmark under three configurations: direct KMS
+scanout (no compositor, no window) and two Wayland compositors, labwc and
+Weston. The physical screen always runs at its native 1920x1080.
 
-[`vkmark_kms_output.txt`](vkmark_kms_output.txt), [`vkmark_weston_gl_800x600_output.txt`](vkmark_weston_gl_800x600_output.txt)
+`vkmark` itself is tested windowed at 1920x1080 and 800x600:
 
+| Scene | FPS (KMS, 1920x1080) | FPS (labwc, 1920x1080) | FPS (labwc, 800x600) | FPS (Weston, 800x600) |
+|---|---|---|---|---|
+| clear | 480 | 55 | 186 | 206 |
+| cube | 140 | 34 | 131 | 134 |
+| shading | 84 | 28 | 70 | 60 |
+| desktop | 19 | 8 | 39 | 30 |
+| effect2d | 9 | 5 | 21 | 21 |
+| texture | 78 | 25 | 94 | 81 |
+| vertex | 124 | 34 | 97 | 81 |
 
+Command line invocation and output, e.g.:
 
-Most glmark2-es2-wayland scenes under Weston (Zink) hit a reset or hang within 2 seconds due to a missing FW completion IRQ.
-
-| Scene | FPS |
-|---|---|
-| clear | 17 |
-| shading | 13 |
-| bump | 13 |
-| function | 12 |
-| texture | 12 |
-| ideas | 10 |
-| shadow | 9 |
-| pulsar | 6 |
-| refract | 4 |
-| conditionals | 3 |
-| effect2d | 2 |
-| loop | 2 |
-| buffer | 1 |
-| desktop | 1 |
-| terrain | 1 |
-| build | — |
-| jellyfish | — |
-
-[`glmark2_weston_zink_clear_2sec_output.txt`](glmark2_weston_zink_clear_2sec_output.txt)
+- [`vkmark_7scenes_kms_mesa26.2.2-2_1920x1080_20sec_output.txt`](vkmark_7scenes_kms_mesa26.2.2-2_1920x1080_20sec_output.txt)
+- [`vkmark_7scenes_labwc_mesa26.2.2-2_1920x1080_20sec_output.txt`](vkmark_7scenes_labwc_mesa26.2.2-2_1920x1080_20sec_output.txt)
+- [`vkmark_7scenes_labwc_mesa26.2.2-2_800x600_20sec_output.txt`](vkmark_7scenes_labwc_mesa26.2.2-2_800x600_20sec_output.txt)
+- [`vkmark_7scenes_weston_mesa26.2.2-2_800x600_20sec_output.txt`](vkmark_7scenes_weston_mesa26.2.2-2_800x600_20sec_output.txt)
 
 
+### glmark2-es2-wayland test results
+
+The following results are from glmark2-es2-wayland (OpenGL ES via Zink) under
+two Wayland compositors, Weston and labwc. The physical screen always runs at
+its native 1920x1080.
+
+`glmark2` itself is tested windowed at 1920x1080 and 800x600:
+
+| Scene | FPS (Weston, 1920x1080) | FPS (labwc, 1920x1080) | FPS (Weston, 800x600) | FPS (labwc, 800x600) |
+|---|---|---|---|---|
+| clear | 21 | 26 | 56 | 63 |
+| shading | 16 | 18 | 45 | 40 |
+| bump | 17 | 20 | 47 | 53 |
+| function | 11 | 13 | 41 | 40 |
+| texture | 15 | 18 | 47 | 52 |
+| ideas | 7 | 11 | 16 | 13 |
+| shadow | 5 | 5 | 15 | 13 |
+| pulsar | 9 | 12 | 33 | 37 |
+| refract | 3 | 3 | 4 | 4 |
+| conditionals | 10 | 16 | 39 | 40 |
+| effect2d | 6 | 10 | 37 | 38 |
+| loop | 9 | 14 | 31 | 35 |
+| buffer | 7 | 9 | 16 | 20 |
+| desktop | 3 | 3 | 8 | 9 |
+| terrain | 1 | 1 | 2 | 2 |
+| build | 20 | 22 | 47 | 57 |
+| jellyfish | 4 | 5 | 13 | 14 |
+
+
+Command line invocation and output, e.g.:
+
+- [`glmark2_jellyfish_weston_zink_mesa26.2.2-2_800x600_20sec_output.txt`](glmark2_jellyfish_weston_zink_mesa26.2.2-2_800x600_20sec_output.txt)
+- [`glmark2_jellyfish_labwc_zink_mesa26.2.2-2_800x600_20sec_output.txt`](glmark2_jellyfish_labwc_zink_mesa26.2.2-2_800x600_20sec_output.txt)
 
 glxgears under Weston with XWayland didn't work at all.
 
@@ -72,16 +92,16 @@ sudo cp rogue_36.50.54.182_v1.fw /lib/firmware/powervr/
 
 You need to apply 2 branches to your kernel:
 
-[`jh7110_dc8200_hdmi_v7.2`](https://github.com/domibel/linux/tree/jh7110_dc8200_hdmi_v7.2)
+[`jh7110_dc8200_hdmi_v7.3-rc4`](https://github.com/domibel/linux/tree/jh7110_dc8200_hdmi_v7.3-rc4)
 and
-[`powervr_on_jh7110_visionfive2_v7.2`](https://github.com/domibel/linux/tree/powervr_on_jh7110_visionfive2_v7.2)
+[`powervr_on_jh7110_visionfive2_v7.3-rc4`](https://github.com/domibel/linux/tree/powervr_on_jh7110_visionfive2_v7.3-rc4)
 
 ```bash
 git remote add domibel https://github.com/domibel/linux
-git fetch domibel powervr_on_jh7110_visionfive2_v7.2 jh7110_dc8200_hdmi_v7.2
-git checkout -b test_gpu v7.2
-git merge domibel/powervr_on_jh7110_visionfive2_v7.2
-git merge domibel/jh7110_dc8200_hdmi_v7.2
+git fetch domibel powervr_on_jh7110_visionfive2_v7.3-rc4 jh7110_dc8200_hdmi_v7.3-rc4
+git checkout -b test_gpu v7.3-rc4
+git merge domibel/powervr_on_jh7110_visionfive2_v7.3-rc4
+git merge domibel/jh7110_dc8200_hdmi_v7.3-rc4
 ```
 
 and additionally, the following configs:
@@ -90,6 +110,8 @@ and additionally, the following configs:
 CONFIG_DRM_POWERVR=m
 CONFIG_DRM_VERISILICON_DC=y
 CONFIG_CMA=y
+CONFIG_ERRATA_SIFIVE=y
+CONFIG_ERRATA_SIFIVE_XPBMTUC=y
 ```
 
 
@@ -155,7 +177,21 @@ vkmark ...  -b clear:duration=20
 vkmark ...  -b cube:duration=20
 vkmark ...  -b shading:duration=20
 ```
-`rmmod` also fails from time to time with a board hang.
+
+
+## Run under labwc (Wayland compositor)
+
+```bash
+sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
+  WLR_LIBINPUT_NO_DEVICES=1 WLR_RENDER_DRM_DEVICE=/dev/dri/renderD128 \
+  labwc
+```
+
+```bash
+sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-0 \
+  PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
+  glmark2-es2-wayland -b jellyfish:duration=20
+```
 
 
 ## Run under Weston (Wayland compositor)
@@ -168,12 +204,11 @@ sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
 ```bash
 sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-1 \
   PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
-  glmark2-es2-wayland -b clear:duration=2
+  glmark2-es2-wayland -b jellyfish:duration=20
 ```
 
 It is not always `wayland-1`, sometimes it is `wayland-0`.
 
-## FW issues
+## Issues
 
-I am not sure if these are FW bugs, but the rascal/dust power sequencing
-and the missing completion IRQ need to be looked at.
+The rascal/dust power sequencing needs to be looked at.

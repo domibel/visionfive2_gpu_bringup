@@ -4,9 +4,8 @@ $ sudo env PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:360541
   -b desktop:duration=20 -b effect2d:duration=20 -b texture:duration=20 \
   -b vertex:duration=20
 
-MESA: warning: Core count fetching is unimplemented. Setting 1 for now.
+MESA: warning: ../src/imagination/vulkan/winsys/powervr/pvr_drm.c:344: FINISHME: Core count fetching is unimplemented. Setting 1 for now.
 WARNING: powervr is not a conformant Vulkan implementation, testing use only.
-MESA: warning: Core count fetching is unimplemented. Setting 1 for now.
 WARNING: powervr is not a conformant Vulkan implementation, testing use only.
 =======================================================
     vkmark 2025.01
@@ -14,17 +13,17 @@ WARNING: powervr is not a conformant Vulkan implementation, testing use only.
     Vendor ID:      0x1010
     Device ID:      0x36054182
     Device Name:    PowerVR B-Series BXE-4-32 MC1
-    Driver Version: 109056006
-    Device UUID:    e696be73e02fe0dd4ac92aaaae05386b
+    Driver Version: 109060098
+    Device UUID:    5322623ff879cc4c28e8ee23bd16d5f5
 =======================================================
-[clear] duration=20: FPS: 54 FrameTime: 18.519 ms
-[cube] duration=20: FPS: 27 FrameTime: 37.037 ms
-[shading] duration=20: FPS: 25 FrameTime: 40.000 ms
-[desktop] duration=20: FPS: 12 FrameTime: 83.333 ms
-[effect2d] duration=20: FPS: 7 FrameTime: 142.857 ms
-[texture] duration=20: FPS: 25 FrameTime: 40.000 ms
-[vertex] duration=20: FPS: 26 FrameTime: 38.462 ms
+[clear] duration=20: FPS: 480 FrameTime: 2.083 ms
+[cube] duration=20: FPS: 140 FrameTime: 7.143 ms
+[shading] duration=20: FPS: 84 FrameTime: 11.905 ms
+[desktop] duration=20: FPS: 19 FrameTime: 52.632 ms
+[effect2d] duration=20: FPS: 9 FrameTime: 111.111 ms
+[texture] duration=20: FPS: 78 FrameTime: 12.821 ms
+[vertex] duration=20: FPS: 124 FrameTime: 8.065 ms
 =======================================================
-                                   vkmark Score: 25
+                                   vkmark Score: 133
 =======================================================
 RC=0
