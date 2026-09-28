@@ -67,7 +67,10 @@ Command line invocation and output, e.g.:
 - [`glmark2_jellyfish_weston_zink_mesa26.2.2-2_800x600_20sec_output.txt`](glmark2_jellyfish_weston_zink_mesa26.2.2-2_800x600_20sec_output.txt)
 - [`glmark2_jellyfish_labwc_zink_mesa26.2.2-2_800x600_20sec_output.txt`](glmark2_jellyfish_labwc_zink_mesa26.2.2-2_800x600_20sec_output.txt)
 
-glxgears under Weston with XWayland didn't work at all.
+### glxgears test results
+
+`glxgears` renders under labwc at 25 FPS,
+using indirect GLX via XWayland, translated to Vulkan by Zink.
 
 ## Hardware
 
