@@ -111,12 +111,21 @@ and additionally, the following configs:
 
 ```
 CONFIG_DRM_POWERVR=m
-CONFIG_DRM_VERISILICON_DC=y
+CONFIG_DRM_VERISILICON_DC=m
 CONFIG_CMA=y
 CONFIG_ERRATA_SIFIVE=y
 CONFIG_ERRATA_SIFIVE_XPBMTUC=y
+CONFIG_DRM_STARFIVE_JH7110_INNO_HDMI=m
+CONFIG_PHY_STARFIVE_JH7110_INNO_HDMI=m
+CONFIG_SOC_STARFIVE_JH7110_VOUT_SUBSYSTEM=m
+CONFIG_SOC_STARFIVE_JH7110_HDMI_SUBSYSTEM=m
 ```
 
+Append them to your `.config`, then run:
+
+```bash
+make ARCH=riscv olddefconfig
+```
 
 The DTB
 `arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2-v1.3b.dtb` is
