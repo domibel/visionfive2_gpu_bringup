@@ -13,10 +13,10 @@ WARNING: powervr is not a conformant Vulkan implementation, testing use only.
     Vendor ID:      0x1010
     Device ID:      0x36054182
     Device Name:    PowerVR B-Series BXE-4-32 MC1
-    Driver Version: 109060098
-    Device UUID:    5322623ff879cc4c28e8ee23bd16d5f5
+    Driver Version: 109060099
+    Device UUID:    8c5c919132bf1b3d46261ef05b32af6c
 =======================================================
-[clear] duration=20: FPS: 480 FrameTime: 2.083 ms
+[clear] duration=20: FPS: 485 FrameTime: 2.062 ms
 [cube] duration=20: FPS: 140 FrameTime: 7.143 ms
 [shading] duration=20: FPS: 84 FrameTime: 11.905 ms
 [desktop] duration=20: FPS: 19 FrameTime: 52.632 ms
@@ -24,6 +24,6 @@ WARNING: powervr is not a conformant Vulkan implementation, testing use only.
 [texture] duration=20: FPS: 78 FrameTime: 12.821 ms
 [vertex] duration=20: FPS: 124 FrameTime: 8.065 ms
 =======================================================
-                                   vkmark Score: 133
+                                   vkmark Score: 134
 =======================================================
 RC=0

@@ -17,20 +17,20 @@ Weston. The physical screen always runs at its native 1920x1080.
 
 | Scene | FPS (KMS, 1920x1080) | FPS (labwc, 1920x1080) | FPS (labwc, 800x600) | FPS (Weston, 800x600) |
 |---|---|---|---|---|
-| clear | 480 | 55 | 186 | 206 |
-| cube | 140 | 34 | 131 | 134 |
-| shading | 84 | 28 | 70 | 60 |
-| desktop | 19 | 8 | 39 | 30 |
-| effect2d | 9 | 5 | 21 | 21 |
-| texture | 78 | 25 | 94 | 81 |
-| vertex | 124 | 34 | 97 | 81 |
+| clear | 485 | 55 | 215 | 209 |
+| cube | 140 | 30 | 153 | 133 |
+| shading | 84 | 21 | 71 | 61 |
+| desktop | 19 | 7 | 39 | 30 |
+| effect2d | 9 | 5 | 20 | 22 |
+| texture | 78 | 21 | 94 | 80 |
+| vertex | 124 | 28 | 103 | 81 |
 
 Command line invocation and output, e.g.:
 
-- [`vkmark_7scenes_kms_mesa26.2.2-2_1920x1080_20sec_output.txt`](vkmark_7scenes_kms_mesa26.2.2-2_1920x1080_20sec_output.txt)
-- [`vkmark_7scenes_labwc_mesa26.2.2-2_1920x1080_20sec_output.txt`](vkmark_7scenes_labwc_mesa26.2.2-2_1920x1080_20sec_output.txt)
-- [`vkmark_7scenes_labwc_mesa26.2.2-2_800x600_20sec_output.txt`](vkmark_7scenes_labwc_mesa26.2.2-2_800x600_20sec_output.txt)
-- [`vkmark_7scenes_weston_mesa26.2.2-2_800x600_20sec_output.txt`](vkmark_7scenes_weston_mesa26.2.2-2_800x600_20sec_output.txt)
+- [`vkmark_7scenes_kms_mesa26.2.3-2_1920x1080_20sec_output.txt`](vkmark_7scenes_kms_mesa26.2.3-2_1920x1080_20sec_output.txt)
+- [`vkmark_7scenes_labwc_mesa26.2.3-2_1920x1080_20sec_output.txt`](vkmark_7scenes_labwc_mesa26.2.3-2_1920x1080_20sec_output.txt)
+- [`vkmark_7scenes_labwc_mesa26.2.3-2_800x600_20sec_output.txt`](vkmark_7scenes_labwc_mesa26.2.3-2_800x600_20sec_output.txt)
+- [`vkmark_7scenes_weston_mesa26.2.3-2_800x600_20sec_output.txt`](vkmark_7scenes_weston_mesa26.2.3-2_800x600_20sec_output.txt)
 
 
 ### glmark2-es2-wayland test results
@@ -43,29 +43,29 @@ its native 1920x1080.
 
 | Scene | FPS (Weston, 1920x1080) | FPS (labwc, 1920x1080) | FPS (Weston, 800x600) | FPS (labwc, 800x600) |
 |---|---|---|---|---|
-| clear | 21 | 26 | 56 | 63 |
-| shading | 16 | 18 | 45 | 40 |
-| bump | 17 | 20 | 47 | 53 |
-| function | 11 | 13 | 41 | 40 |
-| texture | 15 | 18 | 47 | 52 |
-| ideas | 7 | 11 | 16 | 13 |
-| shadow | 5 | 5 | 15 | 13 |
-| pulsar | 9 | 12 | 33 | 37 |
+| clear | 22 | 22 | 54 | 60 |
+| shading | 16 | 18 | 45 | 42 |
+| bump | 16 | 19 | 45 | 50 |
+| function | 11 | 16 | 41 | 41 |
+| texture | 15 | 18 | 45 | 44 |
+| ideas | 7 | 11 | 16 | 14 |
+| shadow | 5 | 5 | 15 | 14 |
+| pulsar | 9 | 12 | 32 | 39 |
 | refract | 3 | 3 | 4 | 4 |
-| conditionals | 10 | 16 | 39 | 40 |
-| effect2d | 6 | 10 | 37 | 38 |
-| loop | 9 | 14 | 31 | 35 |
-| buffer | 7 | 9 | 16 | 20 |
+| conditionals | 10 | 16 | 40 | 40 |
+| effect2d | 6 | 10 | 37 | 40 |
+| loop | 9 | 14 | 31 | 36 |
+| buffer | 7 | 9 | 16 | 21 |
 | desktop | 3 | 3 | 8 | 9 |
 | terrain | 1 | 1 | 2 | 2 |
-| build | 20 | 22 | 47 | 57 |
-| jellyfish | 4 | 5 | 13 | 14 |
+| build | 20 | 21 | 46 | 44 |
+| jellyfish | 4 | 5 | 13 | 15 |
 
 
 Command line invocation and output, e.g.:
 
-- [`glmark2_jellyfish_weston_zink_mesa26.2.2-2_800x600_20sec_output.txt`](glmark2_jellyfish_weston_zink_mesa26.2.2-2_800x600_20sec_output.txt)
-- [`glmark2_jellyfish_labwc_zink_mesa26.2.2-2_800x600_20sec_output.txt`](glmark2_jellyfish_labwc_zink_mesa26.2.2-2_800x600_20sec_output.txt)
+- [`glmark2_jellyfish_weston_zink_mesa26.2.3-2_800x600_20sec_output.txt`](glmark2_jellyfish_weston_zink_mesa26.2.3-2_800x600_20sec_output.txt)
+- [`glmark2_jellyfish_labwc_zink_mesa26.2.3-2_800x600_20sec_output.txt`](glmark2_jellyfish_labwc_zink_mesa26.2.3-2_800x600_20sec_output.txt)
 
 ### glxgears test results
 
