@@ -1,4 +1,4 @@
-# JH7110 / VisionFive 2 — PowerVR BXE-4-32 GPU + DC8200 display bring-up
+# JH7110 / VisionFive 2 - PowerVR BXE-4-32 GPU + DC8200 display bring-up
 
 ![glmark2 jellyfish running under labwc, with one terminal showing the command and output and a second running fastfetch](labwc_glmark2_fastfetch_t30s.png)
 
@@ -95,16 +95,16 @@ sudo cp rogue_36.50.54.182_v1.fw /lib/firmware/powervr/
 
 You need to apply 2 branches to your kernel:
 
-[`jh7110_dc8200_hdmi_v7.3-rc4`](https://github.com/domibel/linux/tree/jh7110_dc8200_hdmi_v7.3-rc4)
+[`jh7110_dc8200_hdmi_v7.3-rc5`](https://github.com/domibel/linux/tree/jh7110_dc8200_hdmi_v7.3-rc5)
 and
-[`powervr_on_jh7110_visionfive2_v7.3-rc4`](https://github.com/domibel/linux/tree/powervr_on_jh7110_visionfive2_v7.3-rc4)
+[`powervr_on_jh7110_visionfive2_v7.3-rc5`](https://github.com/domibel/linux/tree/powervr_on_jh7110_visionfive2_v7.3-rc5)
 
 ```bash
 git remote add domibel https://github.com/domibel/linux
-git fetch domibel powervr_on_jh7110_visionfive2_v7.3-rc4 jh7110_dc8200_hdmi_v7.3-rc4
-git checkout -b test_gpu v7.3-rc4
-git merge domibel/powervr_on_jh7110_visionfive2_v7.3-rc4
-git merge domibel/jh7110_dc8200_hdmi_v7.3-rc4
+git fetch domibel powervr_on_jh7110_visionfive2_v7.3-rc5 jh7110_dc8200_hdmi_v7.3-rc5
+git checkout -b test_gpu v7.3-rc5
+git merge domibel/powervr_on_jh7110_visionfive2_v7.3-rc5
+git merge domibel/jh7110_dc8200_hdmi_v7.3-rc5
 ```
 
 and additionally, the following configs:
@@ -135,15 +135,7 @@ sudo apt install mesa-vulkan-drivers vulkan-tools vkmark glmark2-es2-wayland
 
 ## Loading the driver
 
-The shader-cluster power domain ("rascal/dust") comes up gated after reset.
-So you need to load the driver twice with different parameter values
-(`pow_rascaldust_enable` defaults to `0`).
-
 ```bash
-sudo insmod powervr.ko pow_rascaldust_enable=1
-# a real dispatch here is what makes the FW actually ungate the domain
-PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 vkmark --winsys headless -s 64x64 -b clear:duration=1
-sudo rmmod powervr
 sudo insmod powervr.ko
 ```
 
@@ -212,6 +204,20 @@ sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-1 \
 
 It is not always `wayland-1`, sometimes it is `wayland-0`.
 
+## Acknowledgments
+
+Thanks to everyone whose upstream work and advice made this possible, especially:
+
+- Michal Wilczynski
+- Icenowy Zheng
+- Bo Gan
+- Samuel Holland
+- Alessio Belle
+- Simon Perretta
+- Frank Binns
+
 ## Issues
 
-The rascal/dust power sequencing needs to be looked at.
+- Need more user feedback
+- Need a riscv64 Chromium build in Debian (for WebGL/WebGPU) - https://buildd.debian.org/status/package.php?p=chromium - weak hardware ?
+- Need better riscv64 hardware to build heavy packages, any companies listening ?
