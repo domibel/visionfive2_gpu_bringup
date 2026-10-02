@@ -111,15 +111,21 @@ and additionally, the following configs:
 
 ```
 CONFIG_DRM_POWERVR=m
-CONFIG_DRM_VERISILICON_DC=m
+CONFIG_DRM_VERISILICON_DC=y
 CONFIG_CMA=y
 CONFIG_ERRATA_SIFIVE=y
 CONFIG_ERRATA_SIFIVE_XPBMTUC=y
-CONFIG_DRM_STARFIVE_JH7110_INNO_HDMI=m
-CONFIG_PHY_STARFIVE_JH7110_INNO_HDMI=m
-CONFIG_SOC_STARFIVE_JH7110_VOUT_SUBSYSTEM=m
-CONFIG_SOC_STARFIVE_JH7110_HDMI_SUBSYSTEM=m
+CONFIG_STARFIVE_STARLINK_CACHE=y  # hack: only way to pull in RISCV_NONSTANDARD_CACHE_OPS below
+CONFIG_RISCV_NONSTANDARD_CACHE_OPS=y
+CONFIG_DRM_STARFIVE_JH7110_INNO_HDMI=y
+CONFIG_PHY_STARFIVE_JH7110_INNO_HDMI=y
+CONFIG_SOC_STARFIVE_JH7110_VOUT_SUBSYSTEM=y
+CONFIG_SOC_STARFIVE_JH7110_HDMI_SUBSYSTEM=y
 ```
+
+The display/HDMI ones are `=y` (built-in) rather than `=m` so the framebuffer
+console comes up early enough to show kernel boot messages on screen.
+The GPU driver itself stays a module.
 
 Append them to your `.config`, then run:
 
@@ -143,7 +149,8 @@ Compare your own against it if something isn't probing right.
 I tested this with U-Boot 2025.01-3 (Debian-packaged) and 2026.07.
 
 If your kernel's default CMA reservation is too small, increase it with
-`cma=64M` or higher on your kernel cmdline.
+`cma=128M` or higher on your kernel cmdline. `cma=64M` can fail with
+`fbdev: Failed to setup emulation (ret=-12)` and no HDMI output at all.
 
 ## Install userspace packages
 
