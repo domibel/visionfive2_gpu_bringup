@@ -132,6 +132,15 @@ The DTB
 built from the same tree; where it needs to go depends on how your board's
 bootloader is set up, on my system it's `/boot/efi/dtb/starfive/`.
 
+[`visionfive2-live.dts`](visionfive2-live.dts) is the actual devicetree my
+kernel runs with, dumped with:
+
+```bash
+sudo dtc -I fs -O dts -o visionfive2-live.dts /sys/firmware/devicetree/base
+```
+
+Compare your own against it if something isn't probing right.
+
 If your kernel's default CMA reservation is too small, increase it with
 `cma=64M` or higher on your kernel cmdline.
 
