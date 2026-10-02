@@ -1622,14 +1622,15 @@
 	};
 
 	chosen {
-		linux,uefi-mmap-size = <0x4d8>;
-		u-boot,version = "2025.01-3";
-		bootargs = "BOOT_IMAGE=/boot/vmlinuz-7.3.0-rc5-lzzhzhcfg root=UUID=d0dbffd1-b19d-448b-8263-42049531bd8a ro quiet modprobe.blacklist=powervr cma=128M";
+		linux,uefi-mmap-size = <0x528>;
+		u-boot,version = "2026.07";
+		bootargs = "BOOT_IMAGE=/boot/vmlinuz-7.3.0-rc5-xpbmtuc root=UUID=d0dbffd1-b19d-448b-8263-42049531bd8a ro quiet cma=128M";
 		boot-hartid = <0x02>;
-		linux,uefi-mmap-start = <0x00 0xfe6de068>;
+		linux,uefi-mmap-start = <0x02 0x3ffac068>;
+		smbios3-entrypoint = <0x00 0xff728000>;
 		linux,uefi-mmap-desc-size = <0x28>;
 		linux,uefi-mmap-desc-ver = <0x01>;
-		linux,uefi-system-table = <0x00 0xfff46fd0>;
+		linux,uefi-system-table = <0x00 0xfff15010>;
 		stdout-path = "serial0:115200n8";
 	};
 

@@ -140,6 +140,7 @@ sudo dtc -I fs -O dts -o visionfive2-live.dts /sys/firmware/devicetree/base
 ```
 
 Compare your own against it if something isn't probing right.
+I tested this with U-Boot 2025.01-3 (Debian-packaged) and 2026.07.
 
 If your kernel's default CMA reservation is too small, increase it with
 `cma=64M` or higher on your kernel cmdline.
