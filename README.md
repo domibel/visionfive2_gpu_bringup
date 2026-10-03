@@ -187,9 +187,11 @@ GPU1:
 	deviceName         = llvmpipe (LLVM 22.1.8, 128 bits)
 ```
 
-Both GPUs must show up like this. If PowerVR is missing and you see
-`Unable to open device /dev/dri/renderD128: Permission denied`, your user
-isn't in the `render` group:
+Both GPUs must show up like this.
+
+If PowerVR is missing and you see
+`Unable to open device /dev/dri/renderD128: Permission denied`,
+then your user isn't in the `render` group. Run:
 
 ```bash
 sudo usermod -aG render $USER
@@ -261,6 +263,24 @@ sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-1 \
 ```
 
 It is not always `wayland-1`, sometimes it is `wayland-0`.
+
+## Run under Sway (Wayland compositor)
+
+```bash
+sudo apt install sway
+```
+
+```bash
+sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
+  WLR_LIBINPUT_NO_DEVICES=1 WLR_RENDER_DRM_DEVICE=/dev/dri/renderD128 \
+  sway
+```
+
+```bash
+sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-1 \
+  PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
+  glmark2-es2-wayland -b jellyfish:duration=20
+```
 
 ## Acknowledgments
 
