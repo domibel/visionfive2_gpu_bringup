@@ -236,6 +236,10 @@ vkmark ...  -b shading:duration=20
 
 ## Run under labwc (Wayland compositor)
 
+Run this from a real console/TTY, not a terminal inside an existing X11 or
+Wayland desktop session — a stray `DISPLAY`/`WAYLAND_DISPLAY` makes wlroots
+nest inside that session instead of using DRM/KMS directly.
+
 ```bash
 sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
   WLR_LIBINPUT_NO_DEVICES=1 WLR_RENDER_DRM_DEVICE=/dev/dri/renderD128 \
@@ -248,6 +252,9 @@ sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-0 \
   glmark2-es2-wayland -b jellyfish:duration=20
 ```
 
+Or just run [`run_labwc_jellyfish.sh`](run_labwc_jellyfish.sh), which does both steps above,
+checks for the common failure modes (stray `DISPLAY`, another display server already
+running) with a clear error message, and cleans up after itself.
 
 ## Run under Weston (Wayland compositor)
 
@@ -281,6 +288,10 @@ sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-1 \
   PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
   glmark2-es2-wayland -b jellyfish:duration=20
 ```
+
+Or just run [`run_sway_jellyfish.sh`](run_sway_jellyfish.sh), which does both steps above,
+checks for the common failure modes (stray `DISPLAY`, another display server already
+running) with a clear error message, and cleans up after itself.
 
 ## Acknowledgments
 
