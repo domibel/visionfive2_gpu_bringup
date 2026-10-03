@@ -162,8 +162,40 @@ sudo apt install mesa-vulkan-drivers vulkan-tools vkmark glmark2-es2-wayland
 ## Loading the driver
 
 ```bash
-sudo insmod powervr.ko
+sudo modprobe powervr # this generates no output if successful
 ```
+
+This also pulls in its dependencies automatically. It may already be loaded
+at boot (nothing blacklists it by default).
+
+Verify it worked:
+
+```bash
+PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 vulkaninfo --summary
+```
+
+```
+...
+Devices:
+========
+GPU0:
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = PowerVR B-Series BXE-4-32 MC1
+...
+GPU1:
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 22.1.8, 128 bits)
+```
+
+Both GPUs must show up like this. If PowerVR is missing and you see
+`Unable to open device /dev/dri/renderD128: Permission denied`, your user
+isn't in the `render` group:
+
+```bash
+sudo usermod -aG render $USER
+```
+
+Log out and back in (group membership needs a new login session), then retry.
 
 
 ## Run vkmark  (with winsys backends kms or headless)
