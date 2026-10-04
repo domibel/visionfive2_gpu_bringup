@@ -243,6 +243,7 @@ nest inside that session instead of using DRM/KMS directly.
 ```bash
 sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
   WLR_LIBINPUT_NO_DEVICES=1 WLR_RENDER_DRM_DEVICE=/dev/dri/renderD128 \
+  PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
   labwc
 ```
 
@@ -260,6 +261,7 @@ running) with a clear error message, and cleans up after itself.
 
 ```bash
 sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
+  PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
   weston --backend=drm-backend.so --renderer=gl
 ```
 
@@ -280,6 +282,7 @@ sudo apt install sway
 ```bash
 sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
   WLR_LIBINPUT_NO_DEVICES=1 WLR_RENDER_DRM_DEVICE=/dev/dri/renderD128 \
+  PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
   sway
 ```
 
