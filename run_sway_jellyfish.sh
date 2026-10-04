@@ -58,6 +58,7 @@ trap cleanup EXIT
 echo "== launching sway =="
 sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
   WLR_LIBINPUT_NO_DEVICES=1 WLR_RENDER_DRM_DEVICE=/dev/dri/renderD128 \
+  PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
   sway &
 SWAY_PID=$!
 
@@ -83,6 +84,10 @@ if [ -z "$HOLDER" ] || ! echo "$HOLDER" | grep -q "sway"; then
 	exit 1
 fi
 echo "sway is up, WAYLAND_DISPLAY=$WD"
+
+echo "== sway's actual environment =="
+REAL_SWAY_PID=$(pgrep -x sway | head -1)
+sudo sh -c "cat /proc/$REAL_SWAY_PID/environ" | tr '\0' '\n' | grep -E 'WLR_|PVR_|MESA_|XDG_|WAYLAND_DISPLAY|DISPLAY'
 
 echo "== running jellyfish =="
 sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY="$WD" \
