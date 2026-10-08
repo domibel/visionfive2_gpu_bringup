@@ -159,19 +159,51 @@ sudo apt install mesa-vulkan-drivers vulkan-tools vkmark glmark2-es2-wayland
 ```
 
 
-## Loading the driver
+## Load the driver to create the GPU node /dev/dri/renderD128
 
+It may already be loaded at boot (nothing blacklists it by default).
 ```bash
-sudo modprobe powervr # this generates no output if successful
+sudo modprobe powervr
 ```
 
-This also pulls in its dependencies automatically. It may already be loaded
-at boot (nothing blacklists it by default).
+List the dependencies.
+```bash
+lsmod | grep powervr
+```
 
-Verify it worked:
+```
+powervr               720896  0
+drm_gpuvm             131072  1 powervr
+gpu_sched             217088  1 powervr
+drm_exec               24576  2 drm_gpuvm,powervr
+drm_shmem_helper       98304  1 powervr
+```
+
+## Add the user to `render` group to grant access to  /dev/dri/renderD128
+
+Checks whether you can already read and write the device node:
 
 ```bash
-PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 vulkaninfo --summary
+test -r /dev/dri/renderD128 -a -w /dev/dri/renderD128 && echo "can access" || echo "cannot access"
+```
+
+If this prints "cannot access", add yourself to the `render` group (the group that owns the device node):
+
+```bash
+sudo usermod -aG render $USER
+```
+
+Log out and back in (group membership needs a new login session), then check again.
+
+## Vulkan and OpenGL driver info
+
+### Stock Mesa package
+
+Vulkan:
+
+```bash
+export PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182
+vulkaninfo --summary
 ```
 
 ```
@@ -179,26 +211,116 @@ PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 vulkaninfo --summary
 Devices:
 ========
 GPU0:
+	apiVersion         = 1.2.354
+	driverVersion      = 26.2.4
+	vendorID           = 0x1010
+	deviceID           = 0x36054182
 	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
 	deviceName         = PowerVR B-Series BXE-4-32 MC1
-...
+	driverID           = DRIVER_ID_IMAGINATION_OPEN_SOURCE_MESA
+	driverName         = Imagination open-source Mesa driver
+	driverInfo         = Mesa 26.2.4-1
+	conformanceVersion = 1.4.3.3
+	deviceUUID         = 24b1ada6-eb24-5172-55c6-fa2b276f833d
+	driverUUID         = 2448bf68-3d5f-3167-1a4f-3cad6ce56ffa
 GPU1:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.2.4
+	vendorID           = 0x10005
+	deviceID           = 0x0000
 	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
 	deviceName         = llvmpipe (LLVM 22.1.8, 128 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.2.4-1 (LLVM 22.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e32-2e34-2d3100000000
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000
 ```
 
-Both GPUs must show up like this.
-
-If PowerVR is missing and you see
-`Unable to open device /dev/dri/renderD128: Permission denied`,
-then your user isn't in the `render` group. Run:
+OpenGL/GLES (via Zink):
 
 ```bash
-sudo usermod -aG render $USER
+eglinfo -B -p surfaceless
 ```
 
-Log out and back in (group membership needs a new login session), then retry.
+```
+MESA: warning: ../src/imagination/vulkan/winsys/powervr/pvr_drm.c:344: FINISHME: Core count fetching is unimplemented. Setting 1 for now.
+WARNING: powervr is not a conformant Vulkan implementation, testing use only.
+EGL API version: 1.5
+EGL vendor string: Mesa Project
+EGL version string: 1.5
+EGL client APIs: OpenGL OpenGL_ES
+OpenGL compatibility profile vendor: Mesa
+OpenGL compatibility profile renderer: zink Vulkan 1.2(PowerVR B-Series BXE-4-32 MC1 (IMAGINATION_OPEN_SOURCE_MESA))
+OpenGL compatibility profile version: 2.1 Mesa 26.2.4-1
+OpenGL compatibility profile shading language version: 1.20
+OpenGL ES profile vendor: Mesa
+OpenGL ES profile renderer: zink Vulkan 1.2(PowerVR B-Series BXE-4-32 MC1 (IMAGINATION_OPEN_SOURCE_MESA))
+OpenGL ES profile version: OpenGL ES 2.0 Mesa 26.2.4-1
+OpenGL ES profile shading language version: OpenGL ES GLSL ES 1.0.16
+```
 
+### `mesa-20261006-c2188da+mr44385`
+
+Built from source, with [MR !44385](https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/44385) applied, which adds `VK_EXT_transform_feedback` support to `pvr`.
+
+Vulkan:
+
+```bash
+cd mesa-20261006-c2188da+mr44385/
+meson devenv -C build_pvr env PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 vulkaninfo --summary
+```
+
+```
+...
+Devices:
+========
+GPU0:
+	apiVersion         = 1.2.363
+	driverVersion      = 26.2.99
+	vendorID           = 0x1010
+	deviceID           = 0x36054182
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = PowerVR B-Series BXE-4-32 MC1
+	driverID           = DRIVER_ID_IMAGINATION_OPEN_SOURCE_MESA
+	driverName         = Imagination open-source Mesa driver
+	driverInfo         = Mesa 26.3.0-devel (git-c2188da540) # +mr44385
+	conformanceVersion = 1.4.3.3
+	deviceUUID         = 24b1ada6-eb24-5172-55c6-fa2b276f833d
+	driverUUID         = 8016877d-d581-5276-a8d9-7144f50de597
+GPU1:
+        ...
+```
+
+OpenGL/GLES (via Zink):
+
+```bash
+cd mesa-20261006-c2188da+mr44385/
+meson devenv -C build_pvr eglinfo -B -p surfaceless
+```
+
+```
+MESA: warning: ../src/imagination/vulkan/winsys/powervr/pvr_drm.c:344: FINISHME: Core count fetching is unimplemented. Setting 1 for now.
+WARNING: powervr is not a conformant Vulkan implementation, testing use only.
+Surfaceless platform:
+EGL API version: 1.5
+EGL vendor string: Mesa Project
+EGL version string: 1.5
+EGL client APIs: OpenGL OpenGL_ES
+OpenGL core profile vendor: Mesa
+OpenGL core profile renderer: zink Vulkan 1.2(PowerVR B-Series BXE-4-32 MC1 (IMAGINATION_OPEN_SOURCE_MESA))
+OpenGL core profile version: 3.2 (Core Profile) Mesa 26.3.0-devel (git-c2188da540) # +mr44385
+OpenGL core profile shading language version: 1.50
+OpenGL compatibility profile vendor: Mesa
+OpenGL compatibility profile renderer: zink Vulkan 1.2(PowerVR B-Series BXE-4-32 MC1 (IMAGINATION_OPEN_SOURCE_MESA))
+OpenGL compatibility profile version: 3.2 (Compatibility Profile) Mesa 26.3.0-devel (git-c2188da540) # +mr44385
+OpenGL compatibility profile shading language version: 1.50
+OpenGL ES profile vendor: Mesa
+OpenGL ES profile renderer: zink Vulkan 1.2(PowerVR B-Series BXE-4-32 MC1 (IMAGINATION_OPEN_SOURCE_MESA))
+OpenGL ES profile version: OpenGL ES 3.1 Mesa 26.3.0-devel (git-c2188da540) # +mr44385
+OpenGL ES profile shading language version: OpenGL ES GLSL ES 3.10
+```
 
 ## Run vkmark  (with winsys backends kms or headless)
 
