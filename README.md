@@ -2,6 +2,10 @@
 
 ![glmark2 jellyfish running under labwc, with one terminal showing the command and output and a second running fastfetch](labwc_glmark2_fastfetch_t30s.png)
 
+![Chromium running the WebGL Aquarium demo under labwc, next to chrome://gpu showing Canvas, Compositing, Rasterization and WebGL hardware accelerated](chromium_aquarium_webgl.png)
+
+Chromium 154.0.8037.57 (Sep 2026) with WebGL hardware accelerated. Opengl 3.2 Mesa 26.3.0-devel + mr44385
+
 ## Summary
 
 With a few small kernel changes you can get experimental GPU 3D graphics working
