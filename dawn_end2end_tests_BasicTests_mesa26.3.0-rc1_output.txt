@@ -1,0 +1,71 @@
+$ export PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182
+$ export DEBIAN_DAWN_RAISE_LIMITS=1
+$ dawn_end2end_tests --backend=vulkan --exclusive-device-type-preference=integrated \
+  --gtest_filter='BasicTests.*' --gtest_brief=1
+
+MESA: warning: ../src/imagination/vulkan/winsys/powervr/pvr_drm.c:344: FINISHME: Core count fetching is unimplemented. Setting 1 for now.
+WARNING: powervr is not a conformant Vulkan implementation, testing use only.
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - textureCompressionASTC_LDR unsupported, accepting adapter anyway
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxImageDimension1D                 4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxImageDimension2D                 4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxImageDimensionCube               4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxFramebufferWidth                 4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxFramebufferHeight                4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxViewportDimensions[0]            4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxViewportDimensions[1]            4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: viewportBoundsRange[1]              8191 -> 16383
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxColorAttachments                    4 -> 8
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxUniformBufferRange              16384 -> 65536
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxComputeWorkGroupInvocations       128 -> 256
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxComputeWorkGroupSize[0]           128 -> 256
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxComputeWorkGroupSize[1]           128 -> 256
+Warning: maxInterStageShaderVariables clamped to the feature-level floor (hardware maximum is below the spec minimum): 14 -> 16
+Warning: eglInitialize failed with EGL_NOT_INITIALIZED
+ - While trying to discover a BackendType::OpenGL adapter.
+    at CheckEGL (./src/dawn/native/opengl/UtilsEGL.cpp:89)
+
+Warning: eglInitialize failed with EGL_NOT_INITIALIZED
+ - While trying to discover a BackendType::OpenGLES adapter.
+    at CheckEGL (./src/dawn/native/opengl/UtilsEGL.cpp:89)
+
+Info: Testing configuration
+---------------------
+UseWire: false
+Implicit device synchronization: disabled
+Run suppressed tests: false
+BackendValidation: disabled
+BeginCaptureOnStartup: false
+
+System adapters: 
+ - "PowerVR B-Series BXE-4-32 MC1" - "Imagination open-source Mesa driver: Mesa 26.3.0-rc1 (git-4706512989) [Selected]"
+   type: Integrated GPU, backend: Vulkan, compatibilityMode: false
+   vendorId: 0x1010, deviceId: 0x36054182
+   vendorName: img-tec, architecture: b-series
+ - "Null backend" - ""
+   type: CPU, backend: Null, compatibilityMode: false
+   vendorId: 0x0000, deviceId: 0x0000
+
+MESA: warning: ../src/imagination/vulkan/winsys/powervr/pvr_drm.c:344: FINISHME: Core count fetching is unimplemented. Setting 1 for now.
+WARNING: powervr is not a conformant Vulkan implementation, testing use only.
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - textureCompressionASTC_LDR unsupported, accepting adapter anyway
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxImageDimension1D                 4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxImageDimension2D                 4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxImageDimensionCube               4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxFramebufferWidth                 4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxFramebufferHeight                4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxViewportDimensions[0]            4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxViewportDimensions[1]            4096 -> 8192
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: viewportBoundsRange[1]              8191 -> 16383
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxColorAttachments                    4 -> 8
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxUniformBufferRange              16384 -> 65536
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxComputeWorkGroupInvocations       128 -> 256
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxComputeWorkGroupSize[0]           128 -> 256
+Warning: DEBIAN_DAWN_RAISE_LIMITS set - raising driver limits below the Core feature-level floor: maxComputeWorkGroupSize[1]           128 -> 256
+Warning: maxInterStageShaderVariables clamped to the feature-level floor (hardware maximum is below the spec minimum): 14 -> 16
+Info: Test unsupported: !HasVendorIdFilter()
+./src/dawn/tests/end2end/BasicTests.cpp:43: Skipped
+
+
+[==========] 6 tests from 1 test suite ran. (836 ms total)
+[  PASSED  ] 5 tests.
+[  SKIPPED ] 1 test.

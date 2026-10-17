@@ -1,0 +1,28 @@
+# in a terminal inside the XFCE on Wayland + labwc session
+$ export PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182
+$ vkmark --winsys wayland -s 800x600 \
+  -b clear:duration=20 -b cube:duration=20 -b shading:duration=20 \
+  -b desktop:duration=20 -b effect2d:duration=20 -b texture:duration=20 \
+  -b vertex:duration=20
+
+MESA: warning: ../src/imagination/vulkan/winsys/powervr/pvr_drm.c:344: FINISHME: Core count fetching is unimplemented. Setting 1 for now.
+WARNING: powervr is not a conformant Vulkan implementation, testing use only.
+=======================================================
+    vkmark 2025.01
+=======================================================
+    Vendor ID:      0x1010
+    Device ID:      0x36054182
+    Device Name:    PowerVR B-Series BXE-4-32 MC1
+    Driver Version: 109064192
+    Device UUID:    9cbfc74d5524fe32d15f0d37dd1dba4f
+=======================================================
+[clear] duration=20: FPS: 221 FrameTime: 4.525 ms
+[cube] duration=20: FPS: 171 FrameTime: 5.848 ms
+[shading] duration=20: FPS: 71 FrameTime: 14.085 ms
+[desktop] duration=20: FPS: 38 FrameTime: 26.316 ms
+[effect2d] duration=20: FPS: 21 FrameTime: 47.619 ms
+[texture] duration=20: FPS: 97 FrameTime: 10.309 ms
+[vertex] duration=20: FPS: 101 FrameTime: 9.901 ms
+=======================================================
+                                   vkmark Score: 102
+=======================================================

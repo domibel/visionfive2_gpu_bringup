@@ -55,6 +55,9 @@ cleanup() {
 }
 trap cleanup EXIT
 
+sudo mkdir -p /run/user/0
+sudo chmod 700 /run/user/0
+
 echo "== launching labwc =="
 sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
   WLR_LIBINPUT_NO_DEVICES=1 WLR_RENDER_DRM_DEVICE=/dev/dri/renderD128 \
