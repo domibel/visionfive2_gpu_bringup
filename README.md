@@ -212,12 +212,16 @@ Every GPU program needs two environment variables:
 `PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1` (Mesa refuses to load its non-conformant
 BXE-4-32 driver without it) and `MESA_VK_DEVICE_SELECT=1010:36054182`
 (`vendorID:deviceID`, `36054182` comes from the BVNC `36.50.54.182`), which
-selects the GPU instead of llvmpipe.
+selects the GPU instead of llvmpipe. Add them to `/etc/environment`, then log
+out and back in:
+
+```bash
+printf 'PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1\nMESA_VK_DEVICE_SELECT=1010:36054182\n' | sudo tee -a /etc/environment
+```
 
 Vulkan:
 
 ```bash
-export PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182
 vulkaninfo --summary
 ```
 
@@ -295,15 +299,12 @@ Load `powervr` before you log in, then select **Xfce Session (Wayland)** on the 
 In a terminal:
 
 ```bash
-export PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182
 glmark2-es2-wayland -s 1920x1080 -b jellyfish:duration=20
 ```
 
 ## Run vkmark (headless, KMS or Wayland)
 
 ```bash
-export PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182
-
 # headless - no root needed
 vkmark --winsys headless -s 1920x1080 \
   -b clear:duration=20 -b cube:duration=20 -b shading:duration=20 \
@@ -313,8 +314,7 @@ vkmark --winsys headless -s 1920x1080 \
 # kms - needs root
 # Stop your display manager first, e.g.
 # `sudo systemctl stop lightdm`
-sudo env PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
-vkmark --winsys kms --winsys-options kms-tty=/dev/tty1 -s 1920x1080 \
+sudo vkmark --winsys kms --winsys-options kms-tty=/dev/tty1 -s 1920x1080 \
   -b clear:duration=20 -b cube:duration=20 -b shading:duration=20 \
   -b desktop:duration=20 -b effect2d:duration=20 -b texture:duration=20 \
   -b vertex:duration=20
@@ -335,13 +335,11 @@ nest inside that session instead of using DRM/KMS directly.
 ```bash
 sudo env XDG_RUNTIME_DIR=/run/user/0 XDG_SEAT=seat0 \
   WLR_LIBINPUT_NO_DEVICES=1 WLR_RENDER_DRM_DEVICE=/dev/dri/renderD128 \
-  PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
   labwc
 ```
 
 ```bash
 sudo env XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=wayland-0 \
-  PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182 \
   glmark2-es2-wayland -s 1920x1080 -b jellyfish:duration=20
 ```
 
@@ -358,7 +356,6 @@ Needs a riscv64 Chromium build (Debian has none yet, see Issues).
 Run it as your user from a terminal inside the XFCE on Wayland + labwc session:
 
 ```bash
-export PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182
 chromium --ozone-platform=wayland --no-sandbox \
   "https://webglsamples.org/aquarium/aquarium.html?numFish=1"
 ```
@@ -382,7 +379,6 @@ The Mesa pvr driver does not meet all WebGPU requirements yet.
 go beyond the real hardware limits may crash or render incorrectly.
 
 ```bash
-export PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182
 export DEBIAN_DAWN_RAISE_LIMITS=1
 <your dawn program>
 ```
@@ -391,7 +387,6 @@ export DEBIAN_DAWN_RAISE_LIMITS=1
 To find bugs in the pvr Mesa driver, run Dawn's end-to-end tests:
 
 ```bash
-export PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1 MESA_VK_DEVICE_SELECT=1010:36054182
 export DEBIAN_DAWN_RAISE_LIMITS=1
 dawn_end2end_tests --backend=vulkan --exclusive-device-type-preference=integrated \
   --gtest_filter='BasicTests.*' --gtest_brief=1
